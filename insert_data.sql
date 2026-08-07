@@ -1,25 +1,75 @@
 INSERT INTO Author VALUES
 (1,'J.K. Rowling'),
 (2,'George Orwell'),
-(3,'Chinua Achebe');
+(3,'Chinua Achebe'),
+(4,'Stephen King'),
+(5,'Agatha Christie'),
+(6,'J.R.R. Tolkien'),
+(7,'Mark Twain'),
+(8,'Jane Austen'),
+(9,'William Shakespeare'),
+(10,'Dan Brown'),
+(11,'Paulo Coelho'),
+(12,'Chimamanda Ngozi Adichie'),
+(13,'John Grisham');
 
 INSERT INTO Category VALUES
 (1,'Fantasy'),
 (2,'Fiction'),
-(3,'History');
+(3,'History'),
+(4,'Mystery'),
+(5,'Science Fiction'),
+(6,'Romance'),
+(7,'Adventure'),
+(8,'Drama'),
+(9,'Thriller'),
+(10,'Biography'),
+(11,'Poetry'),
+(12,'Technology'),
+(13,'Education');
 
 INSERT INTO Book VALUES
 (1,'Harry Potter',1,1),
 (2,'1984',2,2),
-(3,'Things Fall Apart',3,2);
+(3,'Things Fall Apart',3,2),
+(4,'The Shining',4,9),
+(5,'Murder on the Orient Express',5,4),
+(6,'The Hobbit',6,7),
+(7,'Adventures of Tom Sawyer',7,7),
+(8,'Pride and Prejudice',8,6),
+(9,'Hamlet',9,8),
+(10,'The Da Vinci Code',10,9),
+(11,'The Alchemist',11,2),
+(12,'Americanah',12,2),
+(13,'The Firm',13,9);
 
 INSERT INTO Member VALUES
 (1,'Katlego','katlego@gmail.com'),
 (2,'John Doe','john@gmail.com'),
-(3,'Sarah Smith','sarah@gmail.com');
+(3,'Sarah Smith','sarah@gmail.com'),
+(4,'Alice Johnson','alice@gmail.com'),
+(5,'Brian Williams','brian@gmail.com'),
+(6,'Carol Davis','carol@gmail.com'),
+(7,'David Brown','david@gmail.com'),
+(8,'Emma Wilson','emma@gmail.com'),
+(9,'Frank Thomas','frank@gmail.com'),
+(10,'Grace Lee','grace@gmail.com'),
+(11,'Henry Moore','henry@gmail.com'),
+(12,'Isabella Clark','isabella@gmail.com'),
+(13,'Jacob Hall','jacob@gmail.com');
 
 INSERT INTO Loan VALUES
 (1,1,1,'2026-08-01','2026-08-10'),
 (2,2,2,'2026-08-02','2026-08-12'),
 (3,1,2,'2026-08-03','2026-08-15'),
-(4,3,3,'2026-08-04',NULL);
+(4,3,3,'2026-08-04',NULL),
+(5,4,4,'2026-08-05','2026-08-15'),
+(6,5,5,'2026-08-06','2026-08-16'),
+(7,6,6,'2026-08-07','2026-08-17'),
+(8,7,7,'2026-08-08','2026-08-18'),
+(9,8,8,'2026-08-09','2026-08-19'),
+(10,9,9,'2026-08-10','2026-08-20'),
+(11,10,10,'2026-08-11','2026-08-21'),
+(12,11,11,'2026-08-12','2026-08-22'),
+(13,12,12,'2026-08-13',NULL),
+(14,13,13,'2026-08-14',NULL);
