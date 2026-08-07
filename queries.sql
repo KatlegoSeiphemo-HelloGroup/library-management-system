@@ -1,12 +1,14 @@
 -- Question 1:
--- Which books have been borrowed by which library members?
+-- Which members borrowed which books and who wrote those books?
 
 SELECT
     Member.name,
-    Book.title
+    Book.title,
+    Author.author_name
 FROM Loan
 JOIN Member ON Loan.member_id = Member.member_id
-JOIN Book ON Loan.book_id = Book.book_id;
+JOIN Book ON Loan.book_id = Book.book_id
+JOIN Author ON Book.author_id = Author.author_id;
 
 
 -- Question 2:
@@ -42,7 +44,7 @@ GROUP BY Category.category_name;
 
 
 -- Question 5:
--- Which members have borrowed the most books?
+-- Which members have borrowed more than one book?
 
 SELECT
     Member.name,
@@ -50,5 +52,4 @@ SELECT
 FROM Loan
 JOIN Member ON Loan.member_id = Member.member_id
 GROUP BY Member.name
-ORDER BY total_loans DESC;
-``
+HAVING COUNT(*) > 1;
