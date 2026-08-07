@@ -8,7 +8,7 @@ A simple database system for managing books, authors, categories, members, and b
 
 The ER diagram for the system is included in:
 
-`database.png`
+`diagram.txt`
 
 ## Tables
 
