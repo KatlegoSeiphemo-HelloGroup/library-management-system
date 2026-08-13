@@ -3,21 +3,25 @@
 require 'db.php';
 
 $sql = "
-    SELECT
-        b.book_id,
-        b.title,
-        a.author_name,
-        c.category_name,
-        b.age_rating
-    FROM Book b
-    JOIN Author a
-        ON b.author_id = a.author_id
-    JOIN Category c
-        ON b.category_id = c.category_id
+SELECT
+    b.book_id,
+    b.title,
+    b.age_rating,
+    b.publication_year,
+    b.description,
+    a.author_name,
+    c.category_name
+FROM Book b
+JOIN Author a
+    ON b.author_id = a.author_id
+JOIN Category c
+    ON b.category_id = c.category_id
+ORDER BY c.category_name, b.title
 ";
 
 $result = mysqli_query($conn, $sql);
 
+$currentCategory = "";
 ?>
 
 <!DOCTYPE html>
@@ -25,54 +29,200 @@ $result = mysqli_query($conn, $sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books</title>
+    <title>Library Catalogue</title>
 
     <style>
-        body {
+
+        body{
             font-family: Arial, sans-serif;
-            margin: 20px;
+            background:#f4f6f9;
+            margin:0;
+            padding:30px;
         }
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
+        h1{
+            text-align:center;
+            color:#2563eb;
+            margin-bottom:40px;
         }
 
-        th, td {
-            border: 1px solid #000;
-            padding: 10px;
-            text-align: left;
+        .category{
+            background:#2563eb;
+            color:white;
+            padding:15px;
+            border-radius:10px;
+            margin-top:40px;
+            margin-bottom:20px;
+            font-size:24px;
+            font-weight:bold;
         }
 
-        th {
-            background-color: #f2f2f2;
+        .books-container{
+            display:flex;
+            flex-wrap:wrap;
+            gap:20px;
         }
+
+        .book-card{
+            width:280px;
+            height:220px;
+            background:white;
+            border-radius:12px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.15);
+            position:relative;
+            overflow:hidden;
+            transition:0.3s;
+            cursor:pointer;
+        }
+
+        .book-card:hover{
+            transform:translateY(-5px);
+        }
+
+        .book-front{
+            padding:20px;
+        }
+
+        .book-title{
+            font-size:22px;
+            font-weight:bold;
+            color:#333;
+            margin-bottom:15px;
+        }
+
+        .book-author{
+            color:#666;
+            margin-bottom:15px;
+        }
+
+        .badge{
+            display:inline-block;
+            padding:6px 12px;
+            border-radius:20px;
+            color:white;
+            font-weight:bold;
+        }
+
+        .child{
+            background:green;
+        }
+
+        .teen{
+            background:orange;
+        }
+
+        .adult{
+            background:red;
+        }
+
+        .book-info{
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:#2563eb;
+            color:white;
+            padding:15px;
+            box-sizing:border-box;
+            opacity:0;
+            transition:0.3s;
+            overflow-y:auto;
+        }
+
+        .book-card:hover .book-info{
+            opacity:1;
+        }
+
+        .book-info h3{
+            margin-top:0;
+        }
+
+        .book-info p{
+            line-height:1.5;
+            font-size:14px;
+        }
+
     </style>
+
 </head>
 <body>
 
-<h2>Library Books</h2>
+<h1>📚 Library Catalogue</h1>
 
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Category</th>
-        <th>Age Rating</th>
-    </tr>
+<?php while ($row = mysqli_fetch_assoc($result)) : ?>
 
-    <?php while ($row = mysqli_fetch_assoc($result)) : ?>
-        <tr>
-            <td><?= $row['book_id']; ?></td>
-            <td><?= $row['title']; ?></td>
-            <td><?= $row['author_name']; ?></td>
-            <td><?= $row['category_name']; ?></td>
-            <td><?= $row['age_rating']; ?></td>
-        </tr>
+<?php if ($currentCategory != $row['category_name']) : ?>
+
+<?php
+if ($currentCategory != "") {
+    echo "</div>";
+}
+
+$currentCategory = $row['category_name'];
+?>
+
+<div class="category">
+    <?= $currentCategory ?>
+</div>
+
+<div class="books-container">
+
+    <?php endif; ?>
+
+    <div class="book-card">
+
+        <div class="book-front">
+
+            <div class="book-title">
+                <?= htmlspecialchars($row['title']); ?>
+            </div>
+
+            <div class="book-author">
+                ✍️ <?= htmlspecialchars($row['author_name']); ?>
+            </div>
+
+            <span class="badge <?= strtolower($row['age_rating']); ?>">
+                <?= htmlspecialchars($row['age_rating']); ?>
+            </span>
+
+        </div>
+
+        <div class="book-info">
+
+            <h3><?= htmlspecialchars($row['title']); ?></h3>
+
+            <p>
+                <strong>Author:</strong>
+                <?= htmlspecialchars($row['author_name']); ?>
+            </p>
+
+            <p>
+                <strong>Category:</strong>
+                <?= htmlspecialchars($row['category_name']); ?>
+            </p>
+
+            <p>
+                <strong>Published:</strong>
+                <?= htmlspecialchars($row['publication_year']); ?>
+            </p>
+
+            <p>
+                <strong>Age Rating:</strong>
+                <?= htmlspecialchars($row['age_rating']); ?>
+            </p>
+
+            <p>
+                <?= htmlspecialchars($row['description']); ?>
+            </p>
+
+        </div>
+
+    </div>
+
     <?php endwhile; ?>
 
-</table>
+</div>
 
 </body>
 </html>
