@@ -1,9 +1,9 @@
 <?php
 
-$host = "localhost";
-$user = "root";
-$password = "@Katlego2791";
-$database = "library_db";
+$host     = getenv('DB_HOST') ?: 'mysql';
+$user     = getenv('DB_USER') ?: 'root';
+$password = getenv('DB_PASSWORD') ?: '';
+$database = getenv('DB_NAME') ?: 'library_db';
 
 $conn = mysqli_connect(
     $host,

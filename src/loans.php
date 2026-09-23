@@ -14,7 +14,11 @@ $sql = "
         l.due_date,
         l.return_date,
         l.fine_amount,
-        l.loan_status
+        CASE
+            WHEN l.return_date IS NOT NULL THEN 'Returned'
+            WHEN l.due_date < CURDATE() THEN 'Overdue'
+            ELSE 'Borrowed'
+        END AS loan_status
     FROM Loan l
     JOIN Member m
         ON l.member_id = m.member_id
@@ -26,57 +30,22 @@ $sql = "
 $result = mysqli_query($conn, $sql);
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Loans</title>
-
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .returned {
-            color: green;
-            font-weight: bold;
-        }
-
-        .borrowed {
-            color: orange;
-            font-weight: bold;
-        }
-
-        .overdue {
-            color: red;
-            font-weight: bold;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { margin-bottom: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .returned { color: green; font-weight: bold; }
+        .borrowed { color: orange; font-weight: bold; }
+        .overdue { color: red; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -102,7 +71,6 @@ $result = mysqli_query($conn, $sql);
 
         <?php
         $statusClass = '';
-
         if ($row['loan_status'] === 'Returned') {
             $statusClass = 'returned';
         } elseif ($row['loan_status'] === 'Borrowed') {
@@ -114,11 +82,11 @@ $result = mysqli_query($conn, $sql);
 
         <tr>
             <td><?= $row['loan_id']; ?></td>
-            <td><?= $row['membership_code']; ?></td>
-            <td><?= $row['name']; ?></td>
-            <td><?= $row['member_type']; ?></td>
-            <td><?= $row['title']; ?></td>
-            <td><?= $row['age_rating']; ?></td>
+            <td><?= htmlspecialchars($row['membership_code']); ?></td>
+            <td><?= htmlspecialchars($row['name']); ?></td>
+            <td><?= htmlspecialchars($row['member_type']); ?></td>
+            <td><?= htmlspecialchars($row['title']); ?></td>
+            <td><?= htmlspecialchars($row['age_rating']); ?></td>
             <td><?= $row['loan_date']; ?></td>
             <td><?= $row['due_date']; ?></td>
             <td><?= $row['return_date'] ?? 'Not Returned'; ?></td>
